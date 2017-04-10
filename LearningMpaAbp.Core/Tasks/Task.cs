@@ -14,7 +14,7 @@ namespace LearningMpaAbp.Tasks
         public const int MaxDescriptionLength = 64 * 1024;//64kb
         
         public long? AssignedPersonId { get; set; }
-
+        //添加导航属性 用来保存分配任务到某个用户
         [ForeignKey("AssignedPersonId")]
         public User AssignedPerson { get; set; }
 

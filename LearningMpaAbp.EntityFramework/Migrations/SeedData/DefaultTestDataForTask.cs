@@ -20,7 +20,7 @@ namespace LearningMpaAbp.Migrations.SeedData
         {
             _tasks = new List<Task>()
             {
-                new Task("Learning ABP deom", "Learning how to use abp framework to build a MPA application."),
+                new Task("Learning ABP demo", "Learning how to use abp framework to build a MPA application."),
                 new Task("Make Lunch", "Cook 2 dishs")
             };
         }

@@ -21,7 +21,7 @@ namespace LearningMpaAbp.Web
                         L("HomePage"),
                         url: "",
                         icon: "fa fa-home",
-                        requiresAuthentication: true
+                        requiresAuthentication: true //说明只有登录后才可以显示该菜单
                     )
                 ).AddItem(
                     new MenuItemDefinition(
@@ -29,7 +29,7 @@ namespace LearningMpaAbp.Web
                         L("Tenants"),
                         url: "Tenants",
                         icon: "fa fa-globe",
-                        requiredPermissionName: PermissionNames.Pages_Tenants
+                        requiredPermissionName: PermissionNames.Pages_Tenants //用户具有指定的权限才显示该菜单
                     )
                 ).AddItem(
                     new MenuItemDefinition(
@@ -44,7 +44,7 @@ namespace LearningMpaAbp.Web
                         "About",
                         L("About"),
                         url: "About",
-                        icon: "fa fa-info"
+                        icon: "fa fa-info" //About菜单没有给定特定的权限 默认任意用户都可以看到 都显示
                     )
                 ).AddItem(
                     new MenuItemDefinition(

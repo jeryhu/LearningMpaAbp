@@ -51,7 +51,7 @@ namespace LearningMpaAbp.EntityFramework
         }
 
         //TODO: Define an IDbSet for your Entities...
-
+       //定义实体对应的DbSet以应用Code First数据迁移
         public IDbSet<Task> Tasks { get; set; }
     }
 }

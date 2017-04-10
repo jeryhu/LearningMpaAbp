@@ -10,6 +10,9 @@ using LearningMpaAbp.Tasks.Dtos;
 
 namespace LearningMpaAbp.Tasks
 {
+    //继承自接口IApplicationService ABP会自动帮助依赖注入 因为IApplicationService:ITransientDependency
+    //ABP为IApplicationService提供了默认的实现ApplicationService 该基类提供了方便的日志记录功能和本地化功能
+    //ABP中，一个应用服务方法默认是一个工作单元（Unit of Work）。ABP针对UOW模式自动进行数据库的连接及事务管理，且会自动保存数据修改
     /// <summary>
     /// Defines an application service for <see cref="Task"/> operations.
     /// 

@@ -4,6 +4,7 @@ using Abp.AutoMapper;
 
 namespace LearningMpaAbp.Tasks.Dtos
 {
+    //该实体DTO继承自EntityDto ，EntityDto是一个通用的实体只定义Id属性的简单类，直接定义一个TaskDto的目的是为了在多个应用服务方法中共用。
     /// <summary>
     /// A DTO class that can be used in various application service methods when needed to send/receive Task objects.
     /// </summary>

@@ -2,6 +2,7 @@
 @using LearningMpaAbp.Web.Views
 @model LearningMpaAbp.Web.Models.Layout.TopMenuViewModel
 @{
+    //输入url,输出计算后的url
     var calculateMenuUrl = new Func<string, string>((url) =>
     {
         if (string.IsNullOrEmpty(url))

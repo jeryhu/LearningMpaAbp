@@ -40,27 +40,25 @@ function hideForm(modalId) {
 
 //处理异步提交异常
 function errorPost(xhr, status, error, modalId) {
-    if (error.length>0) {
+    if (error.length > 0) {
         abp.notify.error('Something is going wrong, please retry again later!');
         var $modal = $(modalId);
         abp.ui.clearBusy($modal);
     }
 }
-
+//弹出Task编辑窗体
 function editTask(id) {
     abp.ajax({
         url: "/tasks/edit",
         data: { "id": id },
         type: "GET",
         dataType: "html"
-    })
-        .done(function (data) {
-            $("#edit").html(data);
-            $("#editTask").modal("show");
-        })
-        .fail(function (data) {
-            abp.notify.error('Something is wrong!');
-        });
+    }).done(function (data) {
+        $("#edit").html(data);
+        $("#editTask").modal("show");
+    }).fail(function (data) {
+        abp.notify.error('Something is going wrong');
+    });
 }
 
 function deleteTask(id) {
@@ -87,8 +85,7 @@ function getTaskList() {
         url: url,
         type: "GET",
         dataType: "html"
-    })
-        .done(function (data) {
-            $("#taskList").html(data);
-        });
+    }).done(function (data) {
+        $("#taskList").html(data);
+    });
 }

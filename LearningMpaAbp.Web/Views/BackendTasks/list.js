@@ -161,7 +161,7 @@ var ButtonInit = function() {
             });
 
         $("#btn-edit")
-            .click(function() {
+            .click(function () {
                 var selectedRaido = $table.bootstrapTable('getSelections');
                 if (selectedRaido.length === 0) {
                     abp.notify.warn("请先选择要编辑的行！");

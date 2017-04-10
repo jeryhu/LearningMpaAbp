@@ -56,7 +56,7 @@ namespace LearningMpaAbp.Web.Controllers
             var pagedTasks = _taskAppService.GetPagedTasks(filter);
 
 
-            return Json(new {total = pagedTasks.TotalCount, rows = pagedTasks.Items}, JsonRequestBehavior.AllowGet);
+            return Json(new { total = pagedTasks.TotalCount, rows = pagedTasks.Items }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -92,7 +92,12 @@ namespace LearningMpaAbp.Web.Controllers
             }
             return Json(false, JsonRequestBehavior.AllowGet);
         }
-
+        /// <summary>
+        /// 获取任务状态下拉列表
+        /// </summary>
+        /// <param name="curState">当前状态</param>
+        /// <returns></returns>
+        [NonAction]
         private List<SelectListItem> GetTaskStateDropdownList(TaskState? curState)
         {
             var list = new List<SelectListItem>
@@ -105,8 +110,8 @@ namespace LearningMpaAbp.Web.Controllers
                 }
             };
 
-            list.AddRange(Enum.GetValues(typeof(TaskState))
-                .Cast<TaskState>()
+            list.AddRange(
+                Enum.GetValues(typeof(TaskState)).Cast<TaskState>()
                 .Select(state => new SelectListItem
                 {
                     Text = $"TaskState_{state}",
@@ -114,7 +119,6 @@ namespace LearningMpaAbp.Web.Controllers
                     Selected = state == curState
                 })
             );
-
             return list;
         }
     }

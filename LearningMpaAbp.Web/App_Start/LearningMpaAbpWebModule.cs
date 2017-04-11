@@ -15,6 +15,11 @@ using Hangfire;
 
 namespace LearningMpaAbp.Web
 {
+    /*
+        说明： Abp在启动项目时根据指定的启动模块（StartupModule）首先加载该模块，
+        然后再去检查该模块的自定义特性是否定义有[DependsOn]特性，若有则按序加载所有依赖的模块，也就是链式动态依赖加载。
+        然后再依次调用Module的PreInitialize，Initialize和PostInitialize以完成初始化。
+     */
     [DependsOn(
         typeof(LearningMpaAbpDataModule),
         typeof(LearningMpaAbpApplicationModule),
@@ -53,7 +58,7 @@ namespace LearningMpaAbp.Web
             {
                 cache.DefaultSlidingExpireTime = TimeSpan.FromMinutes(10);
             });
-            
+
         }
 
         public override void Initialize()

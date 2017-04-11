@@ -67,22 +67,16 @@ namespace LearningMpaAbp.Tasks
 
         public GetTasksOutput GetTasks(GetTasksInput input)
         {
-            var query = _taskRepository.GetAll().Include(t => t.AssignedPerson)
-                .WhereIf(input.State.HasValue, t => t.State == input.State.Value)
-                .WhereIf(!input.Filter.IsNullOrEmpty(), t => t.Title.Contains(input.Filter))
-                .WhereIf(input.AssignedPersonId.HasValue, t => t.AssignedPersonId == input.AssignedPersonId.Value);
-
-            //排序
-            if (!string.IsNullOrEmpty(input.Sorting))
-                query = query.OrderBy(input.Sorting);
-            else
-                query = query.OrderByDescending(t => t.CreationTime);
-
+            var query = _taskRepository.GetAll()
+                        .Include(t => t.AssignedPerson)
+                        .WhereIf(input.State.HasValue, t => t.State == input.State.Value)
+                        .WhereIf(!input.Filter.IsNullOrEmpty(), t => t.Title.Contains(input.Filter))
+                        .WhereIf(input.AssignedPersonId.HasValue, t => t.AssignedPersonId == input.AssignedPersonId.Value);
+           
+            query = string.IsNullOrEmpty(input.Sorting) ? query.OrderByDescending(t => t.CreationTime) : query.OrderBy(input.Sorting); //排序
             var taskList = query.ToList();
-
             //Used AutoMapper to automatically convert List<Task> to List<TaskDto>.
-            return new GetTasksOutput
-            {
+            return new GetTasksOutput{
                 Tasks = Mapper.Map<List<TaskDto>>(taskList)
             };
         }
@@ -90,22 +84,18 @@ namespace LearningMpaAbp.Tasks
 
         public PagedResultDto<TaskDto> GetPagedTasks(GetTasksInput input)
         {
-            //初步过滤
-            var query = _taskRepository.GetAll().Include(t => t.AssignedPerson)
-                .WhereIf(input.State.HasValue, t => t.State == input.State.Value)
-                .WhereIf(!input.Filter.IsNullOrEmpty(), t => t.Title.Contains(input.Filter))
-                .WhereIf(input.AssignedPersonId.HasValue, t => t.AssignedPersonId == input.AssignedPersonId.Value);
-
-            //排序
+            //WhereIf 是ABP针对IQueryable<T>的扩展方法 第一个参数为条件，第二个参数为一个Predicate 当条件为true执行后面的条件过滤
+            var query = _taskRepository.GetAll()
+                        .Include(t => t.AssignedPerson)
+                        .WhereIf(input.State.HasValue, t => t.State == input.State.Value)
+                        .WhereIf(!input.Filter.IsNullOrEmpty(), t => t.Title.Contains(input.Filter))
+                        .WhereIf(input.AssignedPersonId.HasValue, t => t.AssignedPersonId == input.AssignedPersonId.Value);
             query = !string.IsNullOrEmpty(input.Sorting) ? query.OrderBy(input.Sorting) : query.OrderByDescending(t => t.CreationTime);
-
-            //获取总数
             var tasksCount = query.Count();
-            //默认的分页方式
-            //var taskList = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
-
-            //ABP提供了扩展方法PageBy分页方式
-            var taskList = query.PageBy(input).ToList();
+            var taskList = query.PageBy(input).ToList();//这里调用abp封装好的IQueryable的扩展方法 PageBy 实际上就是 执行
+                                                        //query.PageBy(pagedResultRequest.SkipCount, pagedResultRequest.MaxResultCount)
+                                                        //因为GetTasksInput input逐级向上 发现它继承自PagedInputDto（继承自IPagedResultRequest）
+                                                        //最后相当于执行了  querySkip(input.SkipCount).Take(input.MaxResultCount);
 
             return new PagedResultDto<TaskDto>(tasksCount, taskList.MapTo<List<TaskDto>>());
         }
@@ -125,7 +115,7 @@ namespace LearningMpaAbp.Tasks
 
             return task.MapTo<TaskDto>();
         }
-        
+
         public void UpdateTask(UpdateTaskInput input)
         {
             //We can use Logger, it's defined in ApplicationService base class.
@@ -142,22 +132,20 @@ namespace LearningMpaAbp.Tasks
             var updateTask = Mapper.Map<Task>(input);
             _taskRepository.Update(updateTask);
         }
-        
+        //由于授权一般在服务层，所以ABP直接在ApplicationService基类注入并定义了一个PermissionChecker属性 这样 在服务层 就可以直接调PermissionChecker属性进行权限检查
+        //public IPermissionChecker PermissionChecker { protected get; set; }
+        //创建任务
         public int CreateTask(CreateTaskInput input)
         {
             //We can use Logger, it's defined in ApplicationService class.
             Logger.Info("Creating a task for input: " + input);
-            
+
             //判断用户是否有权限
-            if (input.AssignedPersonId.HasValue && input.AssignedPersonId.Value !=AbpSession.GetUserId())
+            if (input.AssignedPersonId.HasValue && input.AssignedPersonId.Value != AbpSession.GetUserId())
                 PermissionChecker.Authorize(PermissionNames.Pages_Tasks_AssignPerson);
-
             var task = Mapper.Map<Task>(input);
-
-            int result = _taskRepository.InsertAndGetId(task);
-
-            //只有创建成功才发送邮件和通知
-            if (result > 0)
+            int result = _taskRepository.InsertAndGetId(task);  
+            if (result > 0)//只有创建成功才发送邮件和通知
             {
                 task.CreationTime = Clock.Now;
 
@@ -174,10 +162,9 @@ namespace LearningMpaAbp.Tasks
                         NotificationSeverity.Info, new[] { task.AssignedPerson.ToUserIdentifier() });
                 }
             }
-
             return result;
         }
-
+        //在MVC控制器中 使用[AbpMvcAuthorize] API中使用[AbpApiAuthorize]
         [AbpAuthorize(PermissionNames.Pages_Tasks_Delete)]
         public void DeleteTask(int taskId)
         {

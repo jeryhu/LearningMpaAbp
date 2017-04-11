@@ -6,7 +6,11 @@
             <li class="list-group-item">
                 <div class="btn-group pull-right">
                     <button type="button" class="btn btn-info" onclick="editTask(@task.Id);">Edit</button>
-                    <button type="button" class="btn btn-success" onclick="deleteTask(@task.Id);">Delete</button>
+                    @*可以在Razor视图中添加权限判断  因为AbpWebViewPage<TModel>：WebViewpage<TModel> 中定义了protected virtual bool IsGranted(string permissionName);*@
+                   @if (IsGranted(LearningMpaAbp.Authorization.PermissionNames.Pages_Tasks_Delete))
+                   {
+                        <button type="button" class="btn btn-success" onclick="deleteTask(@task.Id);">Delete</button>
+                    }
                 </div>
 
                 <div class="media">

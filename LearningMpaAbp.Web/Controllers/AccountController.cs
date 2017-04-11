@@ -129,7 +129,10 @@ namespace LearningMpaAbp.Web.Controllers
         {
             if (identity == null)
                 identity = await _userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
-
+            //扩展ABPSession
+            /* 1.登录前添加Claim身份信息，
+             * 2.定义IAbpSession扩展类获取扩展属性 详见：LearningMpaAbp.Extensions下的AbpSessionExtension2
+             * */
             //添加身份信息，以便在AbpSession中使用
             identity.AddClaim(new Claim(ClaimTypes.Email, user.EmailAddress));
 

@@ -3,6 +3,7 @@ using Abp.Localization;
 
 namespace LearningMpaAbp.Authorization
 {
+    //参照Abp默认创建的权限
     public class TaskAuthorizationProvider : AuthorizationProvider
     {
         public override void SetPermissions(IPermissionDefinitionContext context)

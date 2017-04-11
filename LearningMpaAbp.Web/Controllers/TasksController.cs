@@ -38,7 +38,7 @@ namespace LearningMpaAbp.Web.Controllers
             return View(model);
         }
 
-        // GET: Tasks
+        // GET: Tasks 在Controller中使用X.PagedList提供的方法构造分页结果供前端使用 构造一个StaticPagedList输出
         public ActionResult PagedList(int? page)
         {
             //每页行数

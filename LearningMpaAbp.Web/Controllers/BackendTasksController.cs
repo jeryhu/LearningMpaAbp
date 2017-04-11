@@ -40,7 +40,6 @@ namespace LearningMpaAbp.Web.Controllers
             TaskState currentState;
             if (!string.IsNullOrEmpty(status))
                 Enum.TryParse(status, true, out currentState);
-
             var filter = new GetTasksInput
             {
                 SkipCount = offset,

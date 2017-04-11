@@ -7,6 +7,7 @@ using Abp.Runtime.Session;
 
 namespace LearningMpaAbp.Extensions
 {
+    // µœ÷IAbpSessionExtension
     public class AbpSessionExtension : ClaimsAbpSession, IAbpSessionExtension
     {
         public AbpSessionExtension(IPrincipalAccessor principalAccessor, IMultiTenancyConfig multiTenancy, ITenantResolver tenantResolver, IAmbientScopeProvider<SessionOverride> sessionOverrideScopeProvider)

@@ -141,6 +141,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Read.md" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Localization\Source\LearningMpaAbp-zh-CN.xml" />

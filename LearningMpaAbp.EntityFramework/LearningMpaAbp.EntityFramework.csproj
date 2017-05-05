@@ -238,6 +238,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Read.md" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LearningMpaAbp.Core\LearningMpaAbp.Core.csproj">

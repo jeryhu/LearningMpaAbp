@@ -50,9 +50,7 @@ namespace LearningMpaAbp.Migrations.SeedData
             {
                 return;
             }
-
             _context.Languages.Add(language);
-
             _context.SaveChanges();
         }
     }

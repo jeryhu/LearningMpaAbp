@@ -170,6 +170,7 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Read.md" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LearningMpaAbp.Core\LearningMpaAbp.Core.csproj">
